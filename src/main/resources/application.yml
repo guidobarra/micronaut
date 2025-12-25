@@ -1,13 +1,18 @@
 app:
-  name: ${app.name}
-  version: ${app.version}
+  name: ${application.name}
+  version: ${application.version}
   environment: dev
-  description: ${app.description}
-  metadata:
-    author: guba
-    license: MIT
+  description: ${application.description}
+  license: MIT
+  contact:
+    author: Guba
+    email: guba@example.com
+    url: https://guba.com
 
 micronaut:
+  server:
+    port: 9292
+    context-path: /
   router:
     static-resources:
       swagger:

@@ -22,9 +22,9 @@
         <micronaut.test.version>4.10.2</micronaut.test.version>
 
         <!-- Application properties for resource filtering -->
-        <app.name>${project.artifactId}</app.name>
-        <app.version>${project.version}</app.version>
-        <app.description>${project.description}</app.description>
+        <application.name>${project.artifactId}</application.name>
+        <application.version>${project.version}</application.version>
+        <application.description>${project.description}</application.description>
         <exec.mainClass>com.guba.example.micronaut.Application</exec.mainClass>
 
         <!-- Logging versions -->

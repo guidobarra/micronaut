@@ -23,7 +23,7 @@ public class HealthControllerTest {
     @Test
     public void testHealth() {
         HttpResponse<Map> response = client.toBlocking().exchange(
-            HttpRequest.GET("/health"),
+            HttpRequest.GET("/health-check"),
             Map.class
         );
 
