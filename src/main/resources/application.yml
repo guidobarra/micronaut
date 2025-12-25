@@ -3,11 +3,6 @@ app:
   version: ${application.version}
   environment: dev
   description: ${application.description}
-  license: MIT
-  contact:
-    author: Guba
-    email: guba@example.com
-    url: https://guba.com
 
 micronaut:
   server:

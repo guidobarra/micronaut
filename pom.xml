@@ -25,6 +25,15 @@
         <application.name>${project.artifactId}</application.name>
         <application.version>${project.version}</application.version>
         <application.description>${project.description}</application.description>
+
+        <!-- OpenAPI properties - sync with application.yml -->
+        <app.openapi.title>${project.artifactId}</app.openapi.title>
+        <app.openapi.version>${project.version}</app.openapi.version>
+        <app.openapi.description>${project.description}</app.openapi.description>
+        <app.openapi.license>MIT</app.openapi.license>
+        <app.openapi.contact.name>Guba</app.openapi.contact.name>
+        <app.openapi.contact.email>guba@example.com</app.openapi.contact.email>
+        <app.openapi.contact.url>https://guba.com</app.openapi.contact.url>
         <exec.mainClass>com.guba.example.micronaut.Application</exec.mainClass>
 
         <!-- Logging versions -->
@@ -184,6 +193,13 @@
                         <arg>-Amicronaut.processing.group=com.guba.example</arg>
                         <arg>-Amicronaut.processing.module=micronaut</arg>
                         <arg>-Amicronaut.openapi.views.spec=swagger-ui.enabled=true</arg>
+                        <arg>-Amicronaut.openapi.expand.app.openapi.title=${app.openapi.title}</arg>
+                        <arg>-Amicronaut.openapi.expand.app.openapi.version=${app.openapi.version}</arg>
+                        <arg>-Amicronaut.openapi.expand.app.openapi.description=${app.openapi.description}</arg>
+                        <arg>-Amicronaut.openapi.expand.app.openapi.license=${app.openapi.license}</arg>
+                        <arg>-Amicronaut.openapi.expand.app.openapi.contact.name=${app.openapi.contact.name}</arg>
+                        <arg>-Amicronaut.openapi.expand.app.openapi.contact.email=${app.openapi.contact.email}</arg>
+                        <arg>-Amicronaut.openapi.expand.app.openapi.contact.url=${app.openapi.contact.url}</arg>
                     </compilerArgs>
                     <annotationProcessorPaths combine.children="append">
                         <path>

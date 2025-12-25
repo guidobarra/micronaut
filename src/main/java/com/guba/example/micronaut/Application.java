@@ -10,11 +10,15 @@ import org.slf4j.LoggerFactory;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Micronaut Application",
-                version = "0.0.1",
-                description = "Micronaut application",
-                license = @License(name = "MIT"),
-                contact = @Contact(name = "Guba")
+                title = "${app.openapi.title}",
+                version = "${app.openapi.version}",
+                description = "${app.openapi.description}",
+                license = @License(name = "${app.openapi.license}", url = "https://opensource.org/licenses/MIT"),
+                contact = @Contact(
+                        name = "${app.openapi.contact.name}",
+                        email = "${app.openapi.contact.email}",
+                        url = "${app.openapi.contact.url}"
+                )
         )
 )
 public class Application {
