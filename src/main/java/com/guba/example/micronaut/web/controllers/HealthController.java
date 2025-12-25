@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.inject.Inject;
 
@@ -22,6 +24,7 @@ import java.time.Instant;
 @Tag(name = "Health Check", description = "Health check endpoints")
 public class HealthController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(HealthController.class);
     private final static URI SWAGGER_UI = UriBuilder.of("/swagger-ui").path("index.html").build();
 
     private final AppConfig appConfig;
@@ -29,6 +32,7 @@ public class HealthController {
     @Inject
     public HealthController(AppConfig appConfig) {
         this.appConfig = appConfig;
+        LOG.info("HealthController initialized for application: {}", appConfig.name());
     }
 
     @Get(uri = "/health-check", produces = MediaType.APPLICATION_JSON)
@@ -42,13 +46,17 @@ public class HealthController {
             content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = HealthResponse.class))
     )
     public HealthResponse health() {
-        return new HealthResponse(
+        LOG.debug("Health check endpoint called");
+        HealthResponse response = new HealthResponse(
             appConfig.name(),
             appConfig.version(),
             appConfig.environment(),
             "UP",
             Instant.now().toString()
         );
+        LOG.info("Health check response: name={}, version={}, environment={}, status={}", 
+                response.name(), response.version(), response.environment(), response.status());
+        return response;
     }
 
     @Get
