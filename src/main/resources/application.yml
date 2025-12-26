@@ -3,6 +3,13 @@ app:
   version: ${application.version}
   environment: dev
   description: ${application.description}
+  pokeapi:
+    url: https://pokeapi.co/api/v22
+    read-timeout: 10s
+    connect-timeout: 5s
+    headers:
+      user-agent: Micronaut-Pokemon-Client/1.0
+      accept: application/json
 
 micronaut:
   server:
@@ -16,3 +23,12 @@ micronaut:
       swagger-ui:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
+  http:
+    client:
+      pokeapi:
+        url: ${app.pokeapi.url}
+        read-timeout: ${app.pokeapi.read-timeout}
+        connect-timeout: ${app.pokeapi.connect-timeout}
+        default-headers:
+          User-Agent: ${app.pokeapi.headers.user-agent}
+          Accept: ${app.pokeapi.headers.accept}
