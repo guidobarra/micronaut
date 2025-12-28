@@ -4,7 +4,7 @@ app:
   environment: dev
   description: ${application.description}
   pokeapi:
-    url: https://pokeapi.co/api/v22
+    url: https://pokeapi.co/api/v2
     read-timeout: 10s
     connect-timeout: 5s
     headers:
@@ -24,11 +24,7 @@ micronaut:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
   http:
-    client:
+    services:
       pokeapi:
-        url: ${app.pokeapi.url}
-        read-timeout: ${app.pokeapi.read-timeout}
-        connect-timeout: ${app.pokeapi.connect-timeout}
-        default-headers:
-          User-Agent: ${app.pokeapi.headers.user-agent}
-          Accept: ${app.pokeapi.headers.accept}
+        url: https://pokeapi.co/
+        path: api/v2

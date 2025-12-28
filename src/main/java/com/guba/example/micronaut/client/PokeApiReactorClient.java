@@ -13,10 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-
 @Singleton
-@Named("PokeApiReactorClient")
+@Named("pokeApiReactorClient")
 public class PokeApiReactorClient implements PokemonClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(PokeApiReactorClient.class);

@@ -7,6 +7,9 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.HttpClientConfiguration;
+import io.micronaut.runtime.ApplicationConfiguration;
+import jakarta.annotation.PreDestroy;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
@@ -14,10 +17,10 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
+import java.net.URL;
 
 @Singleton
-@Named("PokeApiLowLevelClient")
+@Named("pokeApiLowLevelClient")
 public class PokeApiLowLevelClient implements PokemonClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(PokeApiLowLevelClient.class);
@@ -25,11 +28,40 @@ public class PokeApiLowLevelClient implements PokemonClient {
     private final HttpClient httpClient;
     private final PokeApiConfig pokeApiConfig;
 
-    public PokeApiLowLevelClient(@Named("pokeapi") HttpClient httpClient, 
-                                  PokeApiConfig pokeApiConfig) {
-        this.httpClient = httpClient;
+    /**
+     * Constructor que crea un HttpClient
+     * El interceptor se aplica automáticamente porque filtra por URL pokeapi.co.
+     */
+    public PokeApiLowLevelClient(PokeApiConfig pokeApiConfig,
+                                  ApplicationConfiguration applicationConfiguration) throws Exception {
         this.pokeApiConfig = pokeApiConfig;
-        LOG.info("PokeApiLowLevelClient initialized with URL: {}", pokeApiConfig.url());
+        
+        // Crear configuración con timeouts desde PokeApiConfig
+        HttpClientConfiguration configuration = new HttpClientConfiguration(applicationConfiguration) {
+            @Override
+            public ConnectionPoolConfiguration getConnectionPoolConfiguration() {
+                return new ConnectionPoolConfiguration();
+            }
+        };
+        configuration.setReadTimeout(pokeApiConfig.readTimeout());
+        configuration.setConnectTimeout(pokeApiConfig.connectTimeout());
+        
+        // Crear HttpClient con la URL base y configuración
+        this.httpClient = HttpClient.create(new URL(pokeApiConfig.url()), configuration);
+        
+        LOG.info("PokeApiLowLevelClient initialized with URL: {} (readTimeout: {}, connectTimeout: {})", 
+                pokeApiConfig.url(), pokeApiConfig.readTimeout(), pokeApiConfig.connectTimeout());
+    }
+    
+    @PreDestroy
+    public void close() {
+        if (httpClient != null) {
+            try {
+                httpClient.close();
+            } catch (Exception e) {
+                LOG.warn("Error closing HttpClient", e);
+            }
+        }
     }
 
     public Mono<Pokemon> getPokemon(String nameOrId) {

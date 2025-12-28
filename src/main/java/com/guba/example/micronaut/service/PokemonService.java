@@ -16,7 +16,10 @@ public class PokemonService {
     private static final Logger LOG = LoggerFactory.getLogger(PokemonService.class);
     private final PokemonClient pokemonClient;
 
-    public PokemonService(@Named("PokeApiClient") PokemonClient pokemonClient) {
+    //pokeApiClient
+    //pokeApiLowLevelClient
+    //pokeApiReactorClient
+    public PokemonService(@Named("pokeApiReactorClient") PokemonClient pokemonClient) {
         this.pokemonClient = pokemonClient;
         LOG.info("=== PokemonService initialized with client: {} ===", this.pokemonClient);
     }
